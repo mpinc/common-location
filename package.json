@@ -5,7 +5,7 @@
   "main": "main.js",
   "dependencies": {
     "mongodb" : "2.1.7",
-    "mp-common-util" : "git@github.com:mpinc/common-util.git#master",
+    "mp-common-util" : "*",
     "mysql": "2.10.2",
     "posix-getopt" : "1.2.0",
     "request": "2.69.0",

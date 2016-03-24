@@ -5,38 +5,36 @@ var serverLogger = require('../util/ServerLogger.js');
 var logger = serverLogger.createLogger('MongoConnection.js');
 
 
-
-var db= null;
-MongoClient.connect(sysConfig.mongoConfig.connect,function(err, dbInstance) {
-    if(err){
+var db = null;
+MongoClient.connect(sysConfig.mongoConfig.connect, function (err, dbInstance) {
+    if (err) {
         logger.error(' connect Mongodb failed ' + err.message);
 
-    }else{
-        db= dbInstance;
+    } else {
+        db = dbInstance;
     }
 
 });
 
-var getDB=function (callback){
+var getDB = function (callback) {
     // Open the connection to the server
-    if (db==null){
-        logger.info(' getDb ' + 'attempt to create mongodb connection ')
+    if (db == null) {
+        logger.info(' getDb ' + 'attempt to create mongodb connection ');
 
-        MongoClient.connect(sysConfig.mongoConfig.connect,function(err, dbInstance) {
-            if(err){
+        MongoClient.connect(sysConfig.mongoConfig.connect, function (err, dbInstance) {
+            if (err) {
                 logger.error(' connect Mongodb failed ' + err.message);
-                return callback(err,null);
-            }else{
-                return  callback(null,dbInstance);
+                return callback(err, null);
+            } else {
+                return callback(null, dbInstance);
             }
 
         });
-    }else {
+    } else {
         callback(null, db);
     }
 
 };
-
 
 
 exports.getDb = getDB;

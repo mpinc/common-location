@@ -10,6 +10,7 @@ var moduleUtil = commonUtil.ModuleUtil;
 var serverLogger = require('./util/ServerLogger.js');
 var logger = serverLogger.createLogger('server.js');
 var sysConfig = require('./config/SystemConfig.js');
+var location = require('./bl/Location.js');
 moduleUtil.setLoginUrl(sysConfig.loginModuleUrl);
 
 function createServer(options) {
@@ -30,18 +31,22 @@ function createServer(options) {
         rate: 50,
         ip: true
     }));
-    server.use(restify.bodyParser({uploadDir:__dirname+'/./uploads/'}));
+    server.use(restify.bodyParser({uploadDir: __dirname + '/./uploads/'}));
     server.use(restify.acceptParser(server.acceptable));
     server.use(restify.dateParser());
     server.use(restify.authorizationParser());
     server.use(restify.queryParser());
     server.use(restify.gzipResponse());
-    server.get('/' ,function(req,res,next){res.send(200,{success:true,project:"MP Common Location Module"});return next();});
 
+    server.get('/', function (req, res, next) {
+        res.send(200, {success: true, project: "MP Common Location Module"});
+        return next();
+    });
+    server.post({path: '/api/location', contentType: 'application/json'}, location.addLocation);
 
 
     server.on('NotFound', function (req, res, next) {
-        logger.warn(req.url +" not found");
+        logger.warn(req.url + " not found");
         res.send(404);
         next();
     });
