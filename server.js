@@ -10,7 +10,7 @@ var moduleUtil = commonUtil.ModuleUtil;
 var serverLogger = require('./util/ServerLogger.js');
 var logger = serverLogger.createLogger('server.js');
 var sysConfig = require('./config/SystemConfig.js');
-var location = require('./bl/Location.js');
+//var location = require('./bl/Location.js');
 moduleUtil.setLoginUrl(sysConfig.loginModuleUrl);
 
 function createServer(options) {
@@ -42,7 +42,7 @@ function createServer(options) {
         res.send(200, {success: true, project: "MP Common Location Module"});
         return next();
     });
-    server.post({path: '/api/location', contentType: 'application/json'}, location.addLocation);
+    //server.post({path: '/api/location', contentType: 'application/json'}, location.addLocation);
 
 
     server.on('NotFound', function (req, res, next) {
