@@ -6,58 +6,69 @@ var assert = require("assert");
 
 exports.test = function (client) {
     describe('service: index', function () {
-        it('should get a json data', function (done) {
+        it('insert test', function (done) {
             var obj = {
                 userId: '26123',
                 updateTime: new Date(),
                 longitude: 22.11,
                 latitude: 123.11
             };
-            var newObj = {
-                updateTime: new Date(),
-                longitude: 0,
-                latitude: 0
-            }
-            // client.post('/api/location', obj, function (err, req, res, data) {
-            //     if (err) {
-            //         throw new Error(err);
-            //     }
-            //     else {
-            //         assert(data.success, "get index json success");
-            //         console.log(data);
-            //         done();
-            //     }
-            // });
-            client.get('/api/location/26123/find', function (err, req, res, data) {
+            client.post('/api/location', obj, function (err, req, res) {
                 if (err) {
                     throw new Error(err);
                 }
                 else {
-                    console.log(data);
-                    assert(data.success, "get index json success");
+                    console.dir(res.statusCode);
+                    console.dir(res.body);
+                    assert(res.body.success == true);
                     done();
                 }
             });
-            // client.put('/api/location/26123/update', newObj, function (err, req, res, data) {
-            //     if (err) {
-            //         throw new Error(err);
-            //     }
-            //     else {
-            //         console.log(data);
-            //         assert(data.success, "get index json success");
-            //         done();
-            //     }
-            // });
-            // client.del('/api/location/26123/remove', function (err, req, res, data) {
-            //     if (err) {
-            //         throw new Error(err);
-            //     }
-            //     else {
-            //         console.log(data);
-            //         assert(data.success, "get index json success");
-            //         done();
-            //     }
-            // });
+        });
+        it('select test', function (done) {
+            client.get('/api/location/26123/find', function (err, req, res) {
+                if (err) {
+                    throw new Error(err);
+                }
+                else {
+                    console.dir(res.statusCode);
+                    console.dir(res.body);
+                    assert(res.body.success == true);
+                    done();
+                }
+            });
+        });
+        it('update test', function (done) {
+            var newObj = {
+                updateTime: new Date(),
+                longitude: 0,
+                latitude: 0
+            };
+
+            client.put('/api/location/26123/update', newObj, function (err, req, res) {
+                if (err) {
+                    throw new Error(err);
+                }
+                else {
+                    console.dir(res.statusCode);
+                    console.dir(res.body);
+                    assert(res.body.success == true);
+                    done();
+                }
+            });
+        });
+        it('delete test', function (done) {
+            client.del('/api/location/26123/remove', function (err, req, res) {
+                if (err) {
+                    throw new Error(err);
+                }
+                else {
+                    console.dir(res.statusCode);
+                    console.dir(res.body);
+                    assert(res.body.success == true);
+                    done();
+                }
+            });
         });
     });
 };
