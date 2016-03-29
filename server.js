@@ -7,6 +7,7 @@ var restify = require('restify');
 var commonUtil = require('mp-common-util');
 var oAuthUtil = commonUtil.oAuthUtil;
 var moduleUtil = commonUtil.ModuleUtil;
+var auth = require('./bl/Auth.js');
 var serverLogger = require('./util/ServerLogger.js');
 var logger = serverLogger.createLogger('server.js');
 var sysConfig = require('./config/SystemConfig.js');
@@ -42,12 +43,14 @@ function createServer(options) {
         res.send(200, {success: true, project: "MP Common Location Module"});
         return next();
     });
+    server.post({path: '/api/location/login', contentType: 'application/json'}, location.adminUserLogin);
     server.post({path: '/api/location', contentType: 'application/json'}, location.addLocation);
     server.put({
         path: '/api/location/:userId/update',
         contentType: 'application/json'
     }, location.updateLocationByUserId);
-    server.get('/api/location/:userId/find', location.getLocationByUserId);
+    server.get('/api/location/:userId/find', auth.checkAdminToken, location.getLocationByUserId);
+    server.get('/api/location/:startTime/:endTime/findByTime', location.getLocationByTimeRange);
     server.del('/api/location/:userId/remove', location.deleteLocationByUserId);
 
     server.on('NotFound', function (req, res, next) {
@@ -55,7 +58,6 @@ function createServer(options) {
         res.send(404);
         next();
     });
-
     return (server);
 }
 
