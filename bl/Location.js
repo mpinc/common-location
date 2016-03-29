@@ -66,7 +66,7 @@ function getLocationByUserId(req, res, next) {
         resUtil.resetFailedRes(res, "userId is null");
         return next();
     }
-    locationDao.getLocationByUserId(params, function (error, rows) {
+    locationDao.getLocation(params, function (error, rows) {
         if (error) {
             logger.error('getLocationByUserId' + error.message);
             resUtil.resInternalError(error, res, next);
@@ -83,7 +83,7 @@ function getLocationByTimeRange(req, res, next) {
         resUtil.resetFailedRes(res, "parameter is null");
         return next();
     }
-    locationDao.getLocationByTimeRange(params, function (error, rows) {
+    locationDao.getLocation(params, function (error, rows) {
         if (error) {
             logger.error('getLocationByTimeRange' + error.message);
             resUtil.resInternalError(error, res, next);

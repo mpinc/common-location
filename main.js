@@ -8,7 +8,7 @@ var logger = serverLogger.createLogger('main.js');
 
 function parseOptions() {
     var option;
-    var opts = {}
+    var opts = {};
     var parser = new getopt.BasicParser('hvd:p:u:z:', process.argv);
 
     while ((option = parser.getopt()) !== undefined) {
@@ -61,4 +61,4 @@ function usage(msg) {
     server.listen((options.port || 8088), function onListening() {
         logger.info('common location module listening at %s', server.url);
     });
-})();
+ })();

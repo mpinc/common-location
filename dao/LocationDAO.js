@@ -39,30 +39,19 @@ function queryAdminUser(params, callback) {
         });
     });
 }
-function getLocationByUserId(params, callback) {
-    var queryObj = {
-        userId: params.userId
-    };
+function getLocation(params, callback) {
+    var queryObj = {};
+    if (params.userId != null) {
+        queryObj["userId"] = params.userId;
+    }
+    if (params.startTime != null && params.endTime != null) {
+        queryObj ["updateTime"] = {$gt: params.startTime + "", $lt: params.endTime + ""};
+    }
     mongoDb.getDb(function (error, db) {
         if (error) {
             callback(error, null);
         }
         var cursor = db.collection('location_collection').find(queryObj).sort({updateTime: -1}).batchSize(1);
-        cursor.each(function (err, doc) {
-            console.dir(doc);
-            callback(error, doc);
-        });
-    });
-}
-function getLocationByTimeRange(params, callback) {
-    var queryObj = {
-        updateTime: {$gt: params.startTime + "", $lt: params.endTime + ""}
-    };
-    mongoDb.getDb(function (error, db) {
-        if (error) {
-            callback(error, null);
-        }
-        var cursor = db.collection('location_collection').find(queryObj).batchSize(1);
         cursor.each(function (err, doc) {
             console.dir(doc);
             callback(error, doc);
@@ -103,8 +92,7 @@ function deleteLocationByUserId(params, callback) {
 module.exports = {
     addLocation: addLocation,
     queryAdminUser: queryAdminUser,
-    getLocationByUserId: getLocationByUserId,
-    getLocationByTimeRange: getLocationByTimeRange,
+    getLocation: getLocation,
     updateLocationByUserId: updateLocationByUserId,
     deleteLocationByUserId: deleteLocationByUserId
 };

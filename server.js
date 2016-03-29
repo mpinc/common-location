@@ -43,15 +43,15 @@ function createServer(options) {
         res.send(200, {success: true, project: "MP Common Location Module"});
         return next();
     });
-    server.post({path: '/api/location/login', contentType: 'application/json'}, location.adminUserLogin);
+    server.get('/api/user/:userName/:password', location.adminUserLogin);
     server.post({path: '/api/location', contentType: 'application/json'}, location.addLocation);
-    server.put({
-        path: '/api/location/:userId/update',
+    server.patch({
+        path: '/api/location/:userId/',
         contentType: 'application/json'
     }, location.updateLocationByUserId);
-    server.get('/api/location/:userId/find', auth.checkAdminToken, location.getLocationByUserId);
-    server.get('/api/location/:startTime/:endTime/findByTime', location.getLocationByTimeRange);
-    server.del('/api/location/:userId/remove', location.deleteLocationByUserId);
+    server.get('/api/location/:userId', location.getLocationByUserId);
+    server.get('/api/location/:startTime/:endTime', location.getLocationByTimeRange);
+    server.del('/api/location/:userId', location.deleteLocationByUserId);
 
     server.on('NotFound', function (req, res, next) {
         logger.warn(req.url + " not found");
