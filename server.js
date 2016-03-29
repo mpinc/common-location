@@ -49,7 +49,7 @@ function createServer(options) {
         path: '/api/location/:userId/',
         contentType: 'application/json'
     }, location.updateLocationByUserId);
-    server.get('/api/location/:userId', location.getLocationByUserId);
+    server.get('/api/location/:userId', auth.checkAdminToken, location.getLocationByUserId);
     server.get('/api/location/:startTime/:endTime', location.getLocationByTimeRange);
     server.del('/api/location/:userId', location.deleteLocationByUserId);
 

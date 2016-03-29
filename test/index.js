@@ -5,7 +5,8 @@ var request= require('supertest');
 var restify = require('restify');
 var client = restify.createJsonClient({
     version: '*',
-    url: 'http://127.0.0.1:8088'
+    url: 'http://127.0.0.1:8088',
+    headers:{"auth-token":"W251bGwsbnVsbCwxNDU5MjU1MDMzNzk5LDEsIiJd"}
 
 });
 

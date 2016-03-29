@@ -56,7 +56,7 @@ function adminUserLogin(req, res, next) {
                 return next();
             }
         }
-    })
+    });
 
 }
 

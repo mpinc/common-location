@@ -5,8 +5,8 @@ var commonUtil = require('mp-common-util');
 var serverLogger = require('../util/ServerLogger.js');
 var logger = serverLogger.createLogger('server.js');
 
-function checkAdminToken(req, next) {
-    var tokenInfo = commonUtil.oAuthUtil.parseAccessToken(req);
+function checkAdminToken(req, res, next) {
+    var tokenInfo = commonUtil.oAuthUtil.parseAccessToken(req.headers["auth-token"]);
     if (tokenInfo != null) {
         return next();
     } else {
