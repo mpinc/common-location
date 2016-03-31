@@ -6,7 +6,7 @@ var restify = require('restify');
 var client = restify.createJsonClient({
     version: '*',
     url: 'http://127.0.0.1:8088',
-    headers:{"auth-token":"W251bGwsbnVsbCwxNDU5MjU1MDMzNzk5LDEsIiJd"}
+    headers:{"auth-token":"WyJ1c2VyIixudWxsLDE0NTkyNDA5OTQ5MjMsMSwiIl0="}
 
 });
 

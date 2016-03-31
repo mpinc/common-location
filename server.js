@@ -45,11 +45,12 @@ function createServer(options) {
     });
     server.get('/api/user/:userName/:password', location.adminUserLogin);
     server.post({path: '/api/location', contentType: 'application/json'}, location.addLocation);
-    server.patch({
-        path: '/api/location/:userId/',
+    server.get('/api/location', auth.checkAdminToken, location.getLocation);
+    //下列方法仅供测试
+    server.put({
+        path: '/api/location/:userId',
         contentType: 'application/json'
     }, location.updateLocationByUserId);
-    server.get('/api/location/:userId', auth.checkAdminToken, location.getLocationByUserId);
     server.get('/api/location/:startTime/:endTime', location.getLocationByTimeRange);
     server.del('/api/location/:userId', location.deleteLocationByUserId);
 

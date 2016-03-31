@@ -60,7 +60,7 @@ function adminUserLogin(req, res, next) {
 
 }
 
-function getLocationByUserId(req, res, next) {
+function getLocation(req, res, next) {
     var params = req.params;
     if (params.userId == null) {
         resUtil.resetFailedRes(res, "userId is null");
@@ -133,7 +133,7 @@ function deleteLocationByUserId(req, res, next) {
 module.exports = {
     addLocation: addLocation,
     adminUserLogin: adminUserLogin,
-    getLocationByUserId: getLocationByUserId,
+    getLocation: getLocation,
     getLocationByTimeRange: getLocationByTimeRange,
     updateLocationByUserId: updateLocationByUserId,
     deleteLocationByUserId: deleteLocationByUserId
