@@ -3,19 +3,29 @@
  */
 var commonUtil = require('mp-common-util');
 var resUtil = commonUtil.responseUtil;
+var oAuthUtil = commonUtil.oAuthUtil;
 var Seq = require('seq');
+var validation = require('../util/Validation.js');
 var locationDao = require('../dao/LocationDAO.js');
 var serverLogger = require('../util/ServerLogger.js');
 var logger = serverLogger.createLogger('server.js');
+var systemError = require('../util/SystemError.js');
 
 
 function addLocation(req, res, next) {
     var params = req.params;
-    if (params.userId == null) {
-        resUtil.resetFailedRes(res, "parameter is not match");
+    params.updateTime = new Date();
+    if (params.latitude == null || !validation.isLocationNumber(params.latitude)) {
+        resUtil.resetFailedRes(res, systemError.INPUT_LATITUDE_ERROR);
         return next();
     }
-    // Seq().seq(function () {
+    if (params.longitude == null || !validation.isLocationNumber(params.longitude)) {
+        resUtil.resetFailedRes(res, systemError.INPUT_LONGITUDE_ERROR);
+        return next();
+    }
+    if (params.userId !== null) {
+        params.accessToken = oAuthUtil.createAccessToken(params.userId, oAuthUtil.clientType.user);//TODO 用户状态参数
+    }
     locationDao.addLocation(params, function (error, record) {
         if (error) {
             logger.error('addLocation' + error.message);
@@ -25,106 +35,17 @@ function addLocation(req, res, next) {
             return next();
         }
     });
-    // });
-}
-
-function adminUserLogin(req, res, next) {
-    var params = req.params;
-    locationDao.queryAdminUser(params, function (error, rows) {
-        if (error) {
-            logger.error('adminUserLogin ' + error.message);
-            resUtil.resInternalError(error, res, next);
-        } else {
-            if (rows && rows.length < 1) {
-                logger.warn('adminUserLogin ' + params.username + 'user is unregistered');
-                res.send(200, {success: false});
-                return next();
-            }
-            var passwordMd5 = commonUtil.encrypt.encryptByMd5(params.password);
-            if (passwordMd5 != rows.password) {
-                logger.warn(' adminUserLogin ' + params.userName + ' password error');
-                res.send(200, {success: false});
-                return next();
-            } else {
-                var user = {
-                    userId: rows.id,
-                    userStatus: 1
-                };
-                user.accessToken = commonUtil.oAuthUtil.createAccessToken(commonUtil.oAuthUtil.clientType.admin, user.userId, user.userStatus);
-                logger.info(' adminUserLogin ' + params.userName + " success");
-                res.send(200, user);
-                return next();
-            }
-        }
-    });
-
 }
 
 function getLocation(req, res, next) {
     var params = req.params;
-    if (params.userId == null) {
-        resUtil.resetFailedRes(res, "userId is null");
-        return next();
-    }
     locationDao.getLocation(params, function (error, rows) {
         if (error) {
-            logger.error('getLocationByUserId' + error.message);
+            logger.error('getLocation' + error.message);
             resUtil.resInternalError(error, res, next);
         } else {
-            res.send(200, {success: true});
+            res.send(200, rows);
             console.dir(rows);
-            return next();
-        }
-    });
-}
-function getLocationByTimeRange(req, res, next) {
-    var params = req.params;
-    if (params.startTime == null || params.endTime == null) {
-        resUtil.resetFailedRes(res, "parameter is null");
-        return next();
-    }
-    locationDao.getLocation(params, function (error, rows) {
-        if (error) {
-            logger.error('getLocationByTimeRange' + error.message);
-            resUtil.resInternalError(error, res, next);
-        } else {
-            res.send(200, {success: true});
-            console.dir(rows);
-            return next();
-        }
-    });
-}
-function updateLocationByUserId(req, res, next) {
-    var params = req.params;
-    if (params.userId == null) {
-        resUtil.resetFailedRes(res, "userId is null");
-        return next();
-    }
-    locationDao.updateLocationByUserId(params, function (error, record) {
-        if (error) {
-            logger.error('updateLocationByUserId' + error.message);
-            resUtil.resInternalError(error, res, next);
-        } else {
-            res.send(200, {success: true});
-            console.log(record.toString);
-            return next();
-        }
-    });
-
-}
-function deleteLocationByUserId(req, res, next) {
-    var params = req.params;
-    if (params.userId == null) {
-        resUtil.resetFailedRes(res, "userId is null");
-        return next();
-    }
-    locationDao.deleteLocationByUserId(params, function (error, record) {
-        if (error) {
-            logger.error('deleteLocationByUserId' + error.message);
-            resUtil.resInternalError(error, res, next);
-        } else {
-            res.send(200, {success: true});
-            console.log(record.toString);
             return next();
         }
     });
@@ -132,9 +53,5 @@ function deleteLocationByUserId(req, res, next) {
 
 module.exports = {
     addLocation: addLocation,
-    adminUserLogin: adminUserLogin,
-    getLocation: getLocation,
-    getLocationByTimeRange: getLocationByTimeRange,
-    updateLocationByUserId: updateLocationByUserId,
-    deleteLocationByUserId: deleteLocationByUserId
+    getLocation: getLocation
 };
