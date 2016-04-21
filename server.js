@@ -7,7 +7,6 @@ var restify = require('restify');
 var commonUtil = require('mp-common-util');
 var oAuthUtil = commonUtil.oAuthUtil;
 var moduleUtil = commonUtil.ModuleUtil;
-var auth = require('./bl/Auth.js');
 var serverLogger = require('./util/ServerLogger.js');
 var logger = serverLogger.createLogger('server.js');
 var sysConfig = require('./config/SystemConfig.js');
@@ -43,16 +42,9 @@ function createServer(options) {
         res.send(200, {success: true, project: "MP Common Location Module"});
         return next();
     });
-    server.get('/api/user/:userName/:password', location.adminUserLogin);
     server.post({path: '/api/location', contentType: 'application/json'}, location.addLocation);
-    server.get('/api/location', auth.checkAdminToken, location.getLocation);
-    //下列方法仅供测试
-    server.put({
-        path: '/api/location/:userId',
-        contentType: 'application/json'
-    }, location.updateLocationByUserId);
-    server.get('/api/location/:startTime/:endTime', location.getLocationByTimeRange);
-    server.del('/api/location/:userId', location.deleteLocationByUserId);
+    // server.get('/api/admin/:adminId/location', oAuthUtil.checkAdminToken, location.getLocation);
+    server.get('/api/user/:userId/location', oAuthUtil.checkUser, location.getLocation);
 
     server.on('NotFound', function (req, res, next) {
         logger.warn(req.url + " not found");

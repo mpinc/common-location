@@ -12,6 +12,8 @@ function addLocation(params, callback) {
     var location = {
         userId: params.userId,
         updateTime: params.updateTime,
+        deviceType: params.deviceType,//设备类型：0:win-pc;1:mac;2:android;3:ios;9:others
+        accessToken: params.accessToken,
         latitude: params.latitude,//纬度
         longitude: params.longitude//经度
     };
@@ -24,75 +26,27 @@ function addLocation(params, callback) {
         });
     });
 }
-function queryAdminUser(params, callback) {
-    var queryObj = {
-        userName: params.userName
-    };
-    mongoDb.getDb(function (error, db) {
-        if (error) {
-            callback(error, null);
-        }
-        var cursor = db.collection("user_collection").find(queryObj);
-        cursor.each(function (err, doc) {
-            console.dir(doc);
-            callback(error, doc);
-        });
-    });
-}
 function getLocation(params, callback) {
     var queryObj = {};
     if (params.userId != null) {
         queryObj["userId"] = params.userId;
     }
     if (params.startTime != null && params.endTime != null) {
-        queryObj ["updateTime"] = {$gt: params.startTime + "", $lt: params.endTime + ""};
+        queryObj ["updateTime"] = {$gt: 'ISODate("params.startTime")', $lt: 'ISODate("params.endTime")'};
+    }
+    if (params.deviceType != null) {
+        queryObj["deviceType"] = params.deviceType;
     }
     mongoDb.getDb(function (error, db) {
         if (error) {
             callback(error, null);
         }
-        var cursor = db.collection('location_collection').find(queryObj).sort({updateTime: -1}).batchSize(1);
-        cursor.each(function (err, doc) {
-            console.dir(doc);
-            callback(error, doc);
+        var result = db.collection('location_collection').find(queryObj).sort({updateTime: -1}).toArray(function (error, result) {
+            callback(error, result);
         });
     });
 }
-function updateLocationByUserId(params, callback) {
-    var queryObj = {
-        userId: params.userId
-    };
-    var newObj = {
-        $set: {
-            updateTime: params.updateTime,
-            latitude: params.latitude,//纬度
-            longitude: params.longitude//经度
-        }
-    };
-    mongoDb.getDb(function (error, db) {
-        if (error) {
-            callback(error, null);
-        }
-        db.collection("location_collection").updateMany(queryObj, newObj, function (error, record) {
-            callback(error, record);
-        });
-    });
-}
-function deleteLocationByUserId(params, callback) {
-    mongoDb.getDb(function (error, db) {
-        if (error) {
-            callback(error, null);
-        }
-        db.collection("location_collection").deleteMany({userId: params.userId}, function (error, record) {
-            callback(error, record);
-        });
-    });
-}
-
 module.exports = {
     addLocation: addLocation,
-    queryAdminUser: queryAdminUser,
-    getLocation: getLocation,
-    updateLocationByUserId: updateLocationByUserId,
-    deleteLocationByUserId: deleteLocationByUserId
+    getLocation: getLocation
 };
