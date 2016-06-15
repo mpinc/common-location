@@ -48,8 +48,7 @@ function getLocation(req, res, next) {
             logger.error('getLocation' + error.message);
             resUtil.resInternalError(error, res, next);
         } else {
-            res.send(200, rows);
-            console.dir(rows);
+            resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
