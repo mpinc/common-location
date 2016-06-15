@@ -26,6 +26,7 @@ function addLocation(req, res, next) {
         updateTime: new Date(),
         userId: params.userId,
         deviceType: params.deviceType,
+        deviceToken: params.deviceToken,
         longitude: params.longitude,
         latitude: params.latitude
     };
