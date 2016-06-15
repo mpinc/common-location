@@ -58,7 +58,7 @@ function usage(msg) {
     var server = loginServer.createServer();
 
     // At last, let's rock and roll
-    server.listen((options.port || 8088), function onListening() {
+    server.listen((options.port || 8095), function onListening() {
         logger.info('common location module listening at %s', server.url);
     });
  })();
