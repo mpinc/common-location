@@ -23,9 +23,6 @@ function addLocation(req, res, next) {
         resUtil.resetFailedRes(res, systemError.INPUT_LONGITUDE_ERROR);
         return next();
     }
-    if (params.userId !== null) {
-        params.accessToken = oAuthUtil.createAccessToken(params.userId, oAuthUtil.clientType.user);//TODO 用户状态参数
-    }
     locationDao.addLocation(params, function (error, record) {
         if (error) {
             logger.error('addLocation' + error.message);

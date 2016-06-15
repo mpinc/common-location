@@ -24,7 +24,8 @@ function createServer(options) {
 
     // Handles annoying user agents (curl)
     server.pre(restify.pre.userAgentConnection());
-
+    restify.CORS.ALLOW_HEADERS.push('Access-Control-Allow-Origin');
+    server.use(restify.CORS());
     // Allow 5 requests/second by IP, and burst to 10
     server.use(restify.throttle({
         burst: 100,
@@ -44,7 +45,7 @@ function createServer(options) {
     });
     server.post({path: '/api/location', contentType: 'application/json'}, location.addLocation);
     // server.get('/api/admin/:adminId/location', oAuthUtil.checkAdminToken, location.getLocation);
-    server.get('/api/user/:userId/location', oAuthUtil.checkUser, location.getLocation);
+    server.get('/api/user/:userId/location', location.getLocation);
 
     server.on('NotFound', function (req, res, next) {
         logger.warn(req.url + " not found");
