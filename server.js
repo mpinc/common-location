@@ -45,7 +45,7 @@ function createServer(options) {
     });
     server.post({path: '/api/location', contentType: 'application/json'}, location.addLocation);
     // server.get('/api/admin/:adminId/location', oAuthUtil.checkAdminToken, location.getLocation);
-    server.get('/api/user/:userId/location', location.getLocation);
+    server.get('/api/location', location.getLocation);
 
     server.on('NotFound', function (req, res, next) {
         logger.warn(req.url + " not found");

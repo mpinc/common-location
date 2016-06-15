@@ -41,7 +41,7 @@ function getLocation(params, callback) {
         if (error) {
             callback(error, null);
         }
-        var result = db.collection('location_collection').find(queryObj).sort({updateTime: -1}).toArray(function (error, result) {
+        db.collection('location_collection').find(queryObj).sort({updateTime: -1}).toArray(function (error, result) {
             callback(error, result);
         });
     });
