@@ -14,7 +14,6 @@ var systemError = require('../util/SystemError.js');
 
 function addLocation(req, res, next) {
     var params = req.params;
-    params.updateTime = new Date();
     if (params.latitude == null || !validation.isLocationNumber(params.latitude)) {
         resUtil.resetFailedRes(res, systemError.INPUT_LATITUDE_ERROR);
         return next();
@@ -23,7 +22,15 @@ function addLocation(req, res, next) {
         resUtil.resetFailedRes(res, systemError.INPUT_LONGITUDE_ERROR);
         return next();
     }
-    locationDao.addLocation(params, function (error, record) {
+    var subParams = {
+        updateTime: new Date(),
+        userId: params.userId,
+        deviceType: params.deviceType,
+        deviceToken: params.deviceToken,
+        longitude: params.longitude,
+        latitude: params.latitude
+    };
+    locationDao.addLocation(subParams, function (error, record) {
         if (error) {
             logger.error('addLocation' + error.message);
             resUtil.resInternalError(error, res, next);
@@ -41,8 +48,7 @@ function getLocation(req, res, next) {
             logger.error('getLocation' + error.message);
             resUtil.resInternalError(error, res, next);
         } else {
-            res.send(200, rows);
-            console.dir(rows);
+            resUtil.resetQueryRes(res, rows);
             return next();
         }
     });

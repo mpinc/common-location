@@ -13,7 +13,7 @@ function addLocation(params, callback) {
         userId: params.userId,
         updateTime: params.updateTime,
         deviceType: params.deviceType,//设备类型：0:win-pc;1:mac;2:android;3:ios;9:others
-        accessToken: params.accessToken,
+        deviceToken: params.deviceToken,
         latitude: params.latitude,//纬度
         longitude: params.longitude//经度
     };
@@ -41,7 +41,7 @@ function getLocation(params, callback) {
         if (error) {
             callback(error, null);
         }
-        var result = db.collection('location_collection').find(queryObj).sort({updateTime: -1}).toArray(function (error, result) {
+        db.collection('location_collection').find(queryObj).sort({updateTime: -1}).toArray(function (error, result) {
             callback(error, result);
         });
     });
