@@ -4,9 +4,11 @@
 var mongoDb = require('../db/MongoCon.js');
 var serverLogger = require('../util/ServerLogger.js');
 var logger = serverLogger.createLogger('LocationDAO.js');
+var config = require('../config/SystemConfig.js');
 var commonUtil = require('mp-common-util');
 var resUtil = commonUtil.responseUtil;
 var sysMsg = commonUtil.systemMsg;
+var http = require('http');
 
 function addLocation(params, callback) {
     var location = {
@@ -46,7 +48,25 @@ function getLocation(params, callback) {
         });
     });
 }
+function getUserIdByDriverId(params, callback) {
+    var url = "http://" + config.loginModuleUrl.host + ":" + config.loginModuleUrl.port + "/api/driver?driverId=" + params.driverId;
+    http.get(url, function (result) {
+        var data = "";
+        result.on('data', function (d) {
+            data += d;
+        }).on('end', function () {
+            var driver = eval("(" + data + ")");
+            if (driver) {
+                callback(driver.user_id);
+            } else
+                callback(null);
+        }).on('error', function (e) {
+            callback(e);
+        });
+    });
+}
 module.exports = {
     addLocation: addLocation,
-    getLocation: getLocation
+    getLocation: getLocation,
+    getUserIdByDriverId: getUserIdByDriverId
 };

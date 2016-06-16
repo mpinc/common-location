@@ -43,14 +43,24 @@ function addLocation(req, res, next) {
 
 function getLocation(req, res, next) {
     var params = req.params;
-    locationDao.getLocation(params, function (error, rows) {
-        if (error) {
-            logger.error('getLocation' + error.message);
-            resUtil.resInternalError(error, res, next);
-        } else {
-            resUtil.resetQueryRes(res, rows);
-            return next();
-        }
+    Seq().seq(function () {
+        var that = this;
+        locationDao.getUserIdByDriverId(params, function (rows) {
+            if (rows) {
+                params.userId = rows;
+            }
+            that();
+        });
+    }).seq(function () {
+        locationDao.getLocation(params, function (error, rows) {
+            if (error) {
+                logger.error('getLocation' + error.message);
+                resUtil.resInternalError(error, res, next);
+            } else {
+                resUtil.resetQueryRes(res, rows);
+                return next();
+            }
+        });
     });
 }
 
