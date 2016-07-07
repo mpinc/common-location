@@ -14,11 +14,11 @@ var systemError = require('../util/SystemError.js');
 
 function addLocation(req, res, next) {
     var params = req.params;
-    if (params.latitude == null || !validation.isLocationNumber(params.latitude)) {
+    if (params.latitude == null) {
         resUtil.resetFailedRes(res, systemError.INPUT_LATITUDE_ERROR);
         return next();
     }
-    if (params.longitude == null || !validation.isLocationNumber(params.longitude)) {
+    if (params.longitude == null) {
         resUtil.resetFailedRes(res, systemError.INPUT_LONGITUDE_ERROR);
         return next();
     }

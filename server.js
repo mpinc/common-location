@@ -49,14 +49,16 @@ function createServer(options) {
     server.use(restify.gzipResponse());
     server.use(restify.fullResponse());
     server.use(restify.bodyParser({uploadDir: __dirname + '/uploads/'}));
-
+    server.get(/\/apidoc\/?.*/, restify.serveStatic({
+        directory: './public'
+    }));
     server.get('/', function (req, res, next) {
         res.send(200, {success: true, project: "MP Common Location Module"});
         return next();
     });
     server.post({path: '/api/location', contentType: 'application/json'}, location.addLocation);
     // server.get('/api/admin/:adminId/location', oAuthUtil.checkAdminToken, location.getLocation);
-    server.get('/api/location', location.getLocation);
+    server.get('/api/user/:userId/location', location.getLocation);
 
     server.on('NotFound', function (req, res, next) {
         logger.warn(req.url + " not found");

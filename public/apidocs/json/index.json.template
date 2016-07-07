@@ -1,0 +1,114 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "The documents for mission public common location api",
+    "version": "1.0.0",
+    "title": "MP common location api doc",
+    "contact": {
+      "email": "jizhe.zhang@missionpublic.com"
+    },
+    "license": {
+      "name": "View source at github",
+      "url": "https://github.com/mpinc/common-location"
+    }
+  },
+  "host": "@@apiHost",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "location",
+      "description": "Record and read location information ",
+      "externalDocs": {
+        "description": "common location records",
+        "url": "@@apiHost"
+      }
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/location": {
+      "post": {
+        "tags": [
+          "location"
+        ],
+        "summary": "Record location information",
+        "description": "",
+        "operationId": "addLocation",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Input location info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Location"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/{userId}/location": {
+      "get": {
+        "tags": [
+          "location"
+        ],
+        "summary": "Read location information",
+        "description": "",
+        "operationId": "getLocation",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "Input phone number and captcha",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Location": {
+      "type": "object",
+      "required": [
+        "longitude",
+        "latitude"
+      ],
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "deviceType": {
+          "type": "integer"
+        },
+        "longitude": {
+          "type": "number"
+        },
+        "latitude": {
+          "type": "number"
+        }
+      },
+      "xml": {
+        "name": "Location"
+      }
+    }
+  }
+}
