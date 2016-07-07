@@ -1,0 +1,352 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "The documents for mission public common mq api",
+    "version": "1.0.0",
+    "title": "MP common mq api doc",
+    "contact": {
+      "email": "jizhe.zhang@missionpublic.com"
+    },
+    "license": {
+      "name": "View source at github",
+      "url": "https://github.com/mpinc/common-mq"
+    }
+  },
+  "host": "127.0.0.1:8083",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "user",
+      "description": "Send message when users' signing in or getting passwords back ",
+      "externalDocs": {
+        "description": "common user message queue",
+        "url": "http://localhost:8083"
+      }
+    },
+    {
+      "name": "order",
+      "description": "Send message when an order is accepted",
+      "externalDocs": {
+        "description": "common order message queue",
+        "url": "http://localhost:8083"
+      }
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "User Register",
+        "description": "The email,username and phone must be unique.",
+        "operationId": "createUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "User Login",
+        "description": "api need email,hone or username only one",
+        "operationId": "userDoLogin",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "em:phone&password",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserToken"
+            }
+          },
+          "400": {
+            "description": "username email or phone has been registered"
+          }
+        }
+      }
+    },
+    "/user/userToken": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "check user auth-token",
+        "description": "",
+        "operationId": "createUsersWithListInput",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "refer to common-mp-util",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserToken"
+            }
+          },
+          "400": {
+            "description": "access token error"
+          }
+        }
+      }
+    },
+    "/user/{userId}/userToken": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "For user change old token on  web or mobile",
+        "description": "",
+        "operationId": "refreshToken",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The user unique id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserToken"
+            }
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "access token error"
+          }
+        }
+      }
+    },
+    "/user/{phone}/password": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "For user reset password by phone code",
+        "description": "",
+        "operationId": "resetPassword",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "path",
+            "description": "The user phone",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/sms/{phone}/sign": {
+      "post": {
+        "tags": [
+          "sms"
+        ],
+        "summary": "send sms to user with reset password code",
+        "description": "",
+        "operationId": "sendPasswordSms",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "path",
+            "description": "The user phone",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/sms/{phone}/password": {
+      "post": {
+        "tags": [
+          "sms"
+        ],
+        "summary": "For user reset password by phone code",
+        "description": "",
+        "operationId": "resetPassword",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "path",
+            "description": "The user phone",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserPhonePassword"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "required": [
+        "password"
+      ],
+      "properties": {
+        "userId": {
+          "type": "integer"
+        },
+        "username": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "userStatus": {
+          "type": "integer"
+        },
+        "wechatId": {
+          "type": "string"
+        },
+        "wechatStatus": {
+          "type": "integer"
+        },
+        "gender": {
+          "type": "integer"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "zipcode": {
+          "type": "integer"
+        },
+        "created_on": {
+          "type": "integer"
+        },
+        "updated_on": {
+          "type": "integer"
+        },
+        "last_login_on": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "UserToken": {
+      "type": "object",
+      "required": [
+        "userId"
+      ],
+      "properties": {
+        "userId": {
+          "type": "integer"
+        },
+        "auth-token": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "UserToken"
+      }
+    },
+    "UserPhonePassword": {
+      "type": "object",
+      "required": [
+        "code",
+        "password"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "UserPhonePassword"
+      }
+    }
+  }
+}

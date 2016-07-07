@@ -57,8 +57,8 @@ function getUserIdByDriverId(params, callback) {
             data += d;
         }).on('end', function () {
             var driver = eval("(" + data + ")");
-            if (driver) {
-                callback(driver.user_id);
+            if (driver && driver.length > 0) {
+                callback(driver[0].user_id);
             } else
                 callback(null);
         }).on('error', function (e) {
