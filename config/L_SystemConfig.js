@@ -9,15 +9,18 @@ var mysqlConnectOptions = {
 
 var logLevel = 'DEBUG';
 var loggerConfig = {
-    appenders: [
-        {type: 'console'},
-        {
-            "type": "file",
-            "filename": "../common-payment.log",
-            "maxLogSize": 2048000,
-            "backups": 10
-        }
-    ]
+    level : 'error',
+    config : {
+        appenders: [
+            { type: 'console' },
+            {
+                "type": "file",
+                "filename": "../common-location.log",
+                "maxLogSize": 204800,
+                "backups": 1
+            }
+        ]
+    }
 }
 function getMysqlConnectOptions() {
     return mysqlConnectOptions;
