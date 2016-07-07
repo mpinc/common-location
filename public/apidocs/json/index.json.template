@@ -12,7 +12,7 @@
       "url": "https://github.com/mpinc/common-location"
     }
   },
-  "host": "localhost:8095",
+  "host": "@@apiHost",
   "basePath": "/api",
   "tags": [
     {
@@ -20,7 +20,7 @@
       "description": "Record and read location information ",
       "externalDocs": {
         "description": "common location records",
-        "url": "localhost:8095"
+        "url": "@@apiHost"
       }
     }
   ],
@@ -74,13 +74,6 @@
             "name": "userId",
             "description": "Input phone number and captcha",
             "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "driverId",
-            "description": "Input phone number and captcha",
-            "required": false,
             "type": "string"
           }
         ],
