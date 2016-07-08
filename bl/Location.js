@@ -58,10 +58,7 @@ function getLocation(req, res, next) {
                 logger.error('getLocation' + error.message);
                 resUtil.resInternalError(error, res, next);
             } else {
-                if (rows && rows.length > 0)
-                    resUtil.resetQueryRes(res, rows[0]);
-                else
-                    resUtil.resetQueryRes(res, rows);
+                resUtil.resetQueryRes(res, rows);
                 return next();
             }
         });
