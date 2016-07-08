@@ -43,16 +43,17 @@ function addLocation(req, res, next) {
 
 function getLocation(req, res, next) {
     var params = req.params;
+    var driverUserId;
     Seq().seq(function () {
         var that = this;
         locationDao.getUserIdByDriverId(params, function (rows) {
             if (rows) {
-                params.userId = rows;
+                driverUserId = rows;
             }
             that();
         });
     }).seq(function () {
-        locationDao.getLocation(params, function (error, rows) {
+        locationDao.getLocation({userId: driverUserId}, function (error, rows) {
             if (error) {
                 logger.error('getLocation' + error.message);
                 resUtil.resInternalError(error, res, next);
