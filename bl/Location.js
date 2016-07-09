@@ -53,7 +53,13 @@ function getLocation(req, res, next) {
             that();
         });
     }).seq(function () {
-        locationDao.getLocation({userId: driverUserId}, function (error, rows) {
+        var subParams = {
+            userId: driverUserId,
+            deviceType: params.deviceType,
+            start: params.start,
+            size: params.size
+        };
+        locationDao.getLocation(subParams, function (error, rows) {
             if (error) {
                 logger.error('getLocation' + error.message);
                 resUtil.resInternalError(error, res, next);
