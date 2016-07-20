@@ -4,7 +4,7 @@ var loginServer = require('./server.js');
 
 var serverLogger = require('./util/ServerLogger.js');
 var logger = serverLogger.createLogger('main.js');
-
+var roleBase = require('./bl/RoleBase.js');
 
 function parseOptions() {
     var option;
@@ -60,5 +60,8 @@ function usage(msg) {
     // At last, let's rock and roll
     server.listen((options.port || 8095), function onListening() {
         logger.info('common location module listening at %s', server.url);
+        roleBase.getReqWithToken(function(error,result){
+            console.log(error||result)
+        })
     });
  })();

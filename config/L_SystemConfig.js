@@ -29,11 +29,11 @@ function getMysqlConnectOptions() {
 var rabbitUrl = 'amqp://127.0.0.1';
 
 var mongoConfig = {
-    connect: 'mongodb://127.0.0.1:27017/mg'
+    connect: 'mongodb://127.0.0.1:27017/sinotrans'
 }
 
 
-var loginModuleUrl = {host: "docs.yipincaidan.com", port: 8091};
+var loginModuleUrl = {host: "127.0.0.1", port: 8091};
 
 module.exports = {
     getMysqlConnectOptions: getMysqlConnectOptions,

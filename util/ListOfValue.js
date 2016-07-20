@@ -1,7 +1,7 @@
 /**
  * Created by ling xue on 2016/3/2.
  */
-
+var moduleInfo = {mch:'loc',desc:'location'};
 /**
  * USER STATUS
  */
@@ -25,6 +25,7 @@ var DEVICE_IOS = 3;
 var DEVICE_OTHERS = 4;
 
 module.exports = {
+    moduleInfo : moduleInfo,
     USER_STATUS_ACTIVE: USER_STATUS_ACTIVE,
     USER_STATUS_NOT_ACTIVE: USER_STATUS_NOT_ACTIVE,
     SMS_REG_TYPE: SMS_REG_TYPE,
