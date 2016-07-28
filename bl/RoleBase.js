@@ -27,7 +27,7 @@ var reqTokenObj ={
 function refreshToken(callback){
 
 
-    httpUtil.httpGet(sysConfig.loginModuleUrl,'/api/mch/'+listOfValue.moduleInfo.mch+"/token",reqTokenObj,params,function(error,result){
+    httpUtil.httpGet(sysConfig.loginModuleUrl,'/api/mch/'+listOfValue.moduleInfo.mch+"/token",reqTokenObj,{},function(error,result){
         callback(error,result);
     })
 }
