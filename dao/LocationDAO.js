@@ -1,52 +1,48 @@
 /**
  * Created by Szane on 2016/3/24.
  */
-var mongoDb = require('../db/MongoCon.js');
 var serverLogger = require('../util/ServerLogger.js');
 var logger = serverLogger.createLogger('LocationDAO.js');
+var location = require('./schema/LocationsCollection.js').Location;
+var mongoose = require('../db/MongoCon.js').getMongo();
+var locationModel = mongoose.model('location', location);
 var config = require('../config/SystemConfig.js');
-var commonUtil = require('mp-common-util');
-var resUtil = commonUtil.responseUtil;
-var sysMsg = commonUtil.systemMsg;
 var http = require('http');
 
 function addLocation(params, callback) {
-    var location = {
-        userId: params.userId,
-        updateTime: params.updateTime,
+    var locationObj = new locationModel({
+        userId: params.userNo,
+        updateTime: Date.now(),
         deviceType: params.deviceType,//设备类型：0:win-pc;1:mac;2:android;3:ios;9:others
         deviceToken: params.deviceToken,
         latitude: params.latitude,//纬度
         longitude: params.longitude//经度
-    };
-    mongoDb.getDb(function (error, db) {
-        if (error) {
-            callback(error, null);
-        }
-        db.collection("location_collection").insertOne(location, function (error, record) {
-            callback(error, record);
-        });
+    });
+    locationObj.save(function (error, result) {
+        logger.debug('addLocation');
+        callback(error, result);
     });
 }
 function getLocation(params, callback) {
-    var queryObj = {};
-    if (params.userId != null) {
-        queryObj["userId"] = params.userId;
+    var query = locationModel.find({}).select('_id userId deviceType deviceToken latitude longitude updateTime ');
+    if (params.userNo != null) {
+        query.where('userId').equals(params.userNo);
     }
-    if (params.startTime != null && params.endTime != null) {
-        queryObj ["updateTime"] = {$gt: 'ISODate("params.startTime")', $lt: 'ISODate("params.endTime")'};
+    if (params.startTime != null) {
+        query.where('updateTime').gte(params.startTime);
+    }
+    if (params.endTime != null) {
+        query.where('updateTime').lte(params.endTime);
     }
     if (params.deviceType != null) {
-        queryObj["deviceType"] = params.deviceType;
+        query.where('deviceType').equals(params.deviceType);
     }
-    mongoDb.getDb(function (error, db) {
-        if (error) {
-            callback(error, null);
-        }
-        db.collection('location_collection').find(queryObj).sort({updateTime: -1})
-            .limit(parseInt(params.size)).skip(parseInt(params.start)).toArray(function (error, result) {
-            callback(error, result);
-        });
+    if (params.start && params.size) {
+        query.skip(parseInt(params.start)).limit(parseInt(params.size));
+    }
+    query.sort('-updateTime').exec(function (err, rows) {
+        logger.debug(' getLocation ');
+        callback(err, rows);
     });
 }
 function getUserIdByDriverId(params, callback) {

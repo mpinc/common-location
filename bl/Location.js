@@ -24,7 +24,7 @@ function addLocation(req, res, next) {
     }
     var subParams = {
         updateTime: new Date(),
-        userId: params.userId,
+        userId: params.userNo,
         deviceType: params.deviceType,
         deviceToken: params.deviceToken,
         longitude: params.longitude,

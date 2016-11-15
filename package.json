@@ -4,16 +4,17 @@
   "description": "mission public location module",
   "main": "main.js",
   "dependencies": {
-    "mongodb" : "2.1.7",
-    "mp-common-util" : "https://github.com/mpinc/common-util.git#master",
+    "mongodb": "2.1.7",
+    "mongoose": "4.4.17",
+    "mp-common-util": "https://github.com/mpinc/common-util.git#master",
     "mysql": "2.10.2",
-    "posix-getopt" : "1.2.0",
+    "posix-getopt": "1.2.0",
     "request": "2.69.0",
     "restify": "4.0.4",
-    "restify-errors" :"4.2.0",
+    "restify-errors": "4.2.0",
     "seq": "0.3.5"
   },
-  "devDependencies": {    
+  "devDependencies": {
     "methods": "*",
     "mocha": "*",
     "superagent": "*",

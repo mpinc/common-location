@@ -1,26 +1,25 @@
 var MongoClient = require('mongodb').MongoClient,
     Server = require('mongodb').Server;
-var sysConfig = require('../config/SystemConfig.js');
 var serverLogger = require('../util/ServerLogger.js');
-var logger = serverLogger.createLogger('MongoConnection.js');
-
+var sysConfig = require('../config/SystemConfig.js');
+var logger = serverLogger.createLogger('MongoCon.js');
 
 var db = null;
 MongoClient.connect(sysConfig.mongoConfig.connect, function (err, dbInstance) {
     if (err) {
         logger.error(' connect Mongodb failed ' + err.message);
-
     } else {
         db = dbInstance;
     }
-
 });
+var mongoose = require('mongoose');
 
-var getDB = function (callback) {
+mongoose.connect(sysConfig.mongoConfig.connect);
+
+var getDb = function (callback) {
     // Open the connection to the server
     if (db == null) {
         logger.info(' getDb ' + 'attempt to create mongodb connection ');
-
         MongoClient.connect(sysConfig.mongoConfig.connect, function (err, dbInstance) {
             if (err) {
                 logger.error(' connect Mongodb failed ' + err.message);
@@ -33,13 +32,15 @@ var getDB = function (callback) {
     } else {
         callback(null, db);
     }
-
 };
 
+function getMongo() {
 
-exports.getDb = getDB;
+    return mongoose;
+}
 
 module.exports = {
-    getDb: getDB
+    getDb: getDb,
+    getMongo: getMongo
 };
 

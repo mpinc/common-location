@@ -1,0 +1,20 @@
+/**
+ * Created by Szane on 16/11/14.
+ */
+var mongoose = require('../../db/MongoCon.js').getMongo();
+//var mongoosastic = require('mongoosastic');
+var Schema = mongoose.Schema,
+    ObjectId = Schema.ObjectId;
+
+var Location = new Schema({
+    userId: Number,
+    deviceType: Number,
+    deviceToken: String,
+    longitude: Number,
+    latitude: Number,
+    updateTime: Date
+});
+
+module.exports = {
+    Location: Location
+};
