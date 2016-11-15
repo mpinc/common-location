@@ -5,7 +5,7 @@ var serverLogger = require('../util/ServerLogger.js');
 var logger = serverLogger.createLogger('LocationDAO.js');
 var location = require('./schema/LocationsCollection.js').Location;
 var mongoose = require('../db/MongoCon.js').getMongo();
-var locationModel = mongoose.model('location', location);
+var locationModel = mongoose.model('location_collection', location);
 var config = require('../config/SystemConfig.js');
 var http = require('http');
 
