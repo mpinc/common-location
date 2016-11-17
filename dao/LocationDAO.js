@@ -12,6 +12,7 @@ var http = require('http');
 function addLocation(params, callback) {
     var locationObj = new locationModel({
         userId: params.userNo,
+        truckNum: params.truckNum,
         updateTime: Date.now(),
         deviceType: params.deviceType,//设备类型：0:win-pc;1:mac;2:android;3:ios;9:others
         deviceToken: params.deviceToken,
@@ -24,9 +25,12 @@ function addLocation(params, callback) {
     });
 }
 function getLocation(params, callback) {
-    var query = locationModel.find({}).select('_id userId deviceType deviceToken latitude longitude updateTime ');
+    var query = locationModel.find({}).select('_id userId truckNum deviceType deviceToken latitude longitude updateTime ');
     if (params.userNo != null) {
         query.where('userId').equals(params.userNo);
+    }
+    if (params.truckNum != null) {
+        query.where('truckNum').equals(params.truckNum);
     }
     if (params.startTime != null) {
         query.where('updateTime').gte(params.startTime);

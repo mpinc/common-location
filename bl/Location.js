@@ -25,6 +25,7 @@ function addLocation(req, res, next) {
     var subParams = {
         updateTime: new Date(),
         userId: params.userNo,
+        truckNum: params.truckNum,
         deviceType: params.deviceType,
         deviceToken: params.deviceToken,
         longitude: params.longitude,
@@ -58,6 +59,7 @@ function getLocation(req, res, next) {
             deviceType: params.deviceType,
             startTime: params.startTime,
             endTime: params.endTime,
+            truckNum: params.truckNum,
             start: params.start,
             size: params.size
         }, function (error, rows) {

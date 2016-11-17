@@ -8,6 +8,7 @@ var Schema = mongoose.Schema,
 
 var Location = new Schema({
     userId: Number,
+    truckNum: String,
     deviceType: Number,
     deviceToken: String,
     longitude: Number,
