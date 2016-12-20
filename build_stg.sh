@@ -3,7 +3,17 @@
 
 rm which_version || true
 git log -1 --format="%H" >> which_version
-sudo rm -r node_modules || true
+
+v_cleanbuild=0
+
+if [  -n "$1"  ]; then
+	v_cleanbuild=$1
+fi
+
+if [ "v_cleanbuild" -eq "1" ]; then
+    sudo rm -r node_modules || true
+fi
 sudo npm install
 cp conf_stg.json conf.json
 grunt
+
