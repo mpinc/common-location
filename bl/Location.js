@@ -22,23 +22,27 @@ function addLocation(req, res, next) {
         resUtil.resetFailedRes(res, systemError.INPUT_LONGITUDE_ERROR);
         return next();
     }
-    var subParams = {
-        updateTime: new Date(),
-        userId: params.userNo,
-        truckNum: params.truckNum,
-        deviceType: params.deviceType,
-        deviceToken: params.deviceToken,
-        longitude: params.longitude,
-        latitude: params.latitude
-    };
-    locationDao.addLocation(subParams, function (error, record) {
-        if (error) {
-            logger.error('addLocation' + error.message);
-            resUtil.resInternalError(error, res, next);
-        } else {
-            res.send(200, {success: true});
-            return next();
-        }
+    Seq(params.locArr).seqEach(function (item, i) {
+        var iterator = this;
+        locationDao.addLocation({
+            updateTime: new Date(),
+            userId: item.userNo,
+            truckNum: item.truckNum,
+            deviceType: item.deviceType,
+            deviceToken: item.deviceToken,
+            longitude: item.longitude,
+            latitude: item.latitude
+        }, function (error, record) {
+            if (error) {
+                logger.error('addLocation' + error.message);
+                resUtil.resInternalError(error, res, next);
+            } else {
+                iterator(null, i);
+            }
+        });
+    }).seq(function () {
+        res.send(200, {success: true});
+        return next();
     });
 }
 
