@@ -14,14 +14,6 @@ var systemError = require('../util/SystemError.js');
 
 function addLocation(req, res, next) {
     var params = req.params;
-    if (params.latitude == null) {
-        resUtil.resetFailedRes(res, systemError.INPUT_LATITUDE_ERROR);
-        return next();
-    }
-    if (params.longitude == null) {
-        resUtil.resetFailedRes(res, systemError.INPUT_LONGITUDE_ERROR);
-        return next();
-    }
     Seq(params.locArr).seqEach(function (item, i) {
         var iterator = this;
         locationDao.addLocation({
