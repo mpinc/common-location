@@ -14,6 +14,7 @@ var systemError = require('../util/SystemError.js');
 
 function addLocation(req, res, next) {
     var params = req.params;
+    logger.debug('addLocation');
     Seq(params.locArr).seqEach(function (item, i) {
         var iterator = this;
         locationDao.getLocation({
