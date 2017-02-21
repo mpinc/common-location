@@ -8,6 +8,8 @@ var listOfValue = require('../util/ListOfValue.js');
 var oAuthUtil = commonUtil.oAuthUtil;
 var httpUtil = commonUtil.httpUtil;
 var resUtil = commonUtil.responseUtil;
+var serverLogger = require('../util/ServerLogger.js');
+var logger = serverLogger.createLogger('server.js');
 var Seq = require('seq');
 function checkRolBase(req,res,next){
     var params = oAuthUtil.getReqParams(req);

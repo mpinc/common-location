@@ -13,7 +13,10 @@ var Location = new Schema({
     deviceToken: String,
     longitude: Number,
     latitude: Number,
-    updateTime: Date
+    updateTime: Date,
+    itemId: String,
+    speed: String,
+    adcode: String
 });
 
 module.exports = {

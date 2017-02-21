@@ -17,7 +17,9 @@ function addLocation(params, callback) {
         deviceType: params.deviceType,//设备类型：0:win-pc;1:mac;2:android;3:ios;9:others
         deviceToken: params.deviceToken,
         latitude: params.latitude,//纬度
-        longitude: params.longitude//经度
+        longitude: params.longitude,//经度
+        itemId: params.itemId,
+        adcode: params.adcode
     });
     locationObj.save(function (error, result) {
         logger.debug('addLocation');
@@ -25,12 +27,18 @@ function addLocation(params, callback) {
     });
 }
 function getLocation(params, callback) {
-    var query = locationModel.find({}).select('_id userId truckNum deviceType deviceToken latitude longitude updateTime ');
+    var query = locationModel.find({}).select('_id userId itemId adcode speed truckNum deviceType deviceToken latitude longitude updateTime ');
     if (params.userNo != null) {
         query.where('userId').equals(params.userNo);
     }
     if (params.truckNum != null) {
         query.where('truckNum').equals(params.truckNum);
+    }
+    if (params.itemId != null) {
+        query.where('itemId').equals(params.itemId);
+    }
+    if (params.adcode != null) {
+        query.where('adcode').equals(params.adcode);
     }
     if (params.startTime != null) {
         query.where('updateTime').gte(params.startTime);

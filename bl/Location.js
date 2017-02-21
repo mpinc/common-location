@@ -16,20 +16,37 @@ function addLocation(req, res, next) {
     var params = req.params;
     Seq(params.locArr).seqEach(function (item, i) {
         var iterator = this;
-        locationDao.addLocation({
-            updateTime: new Date(),
-            userId: item.userNo,
+        locationDao.getLocation({
             truckNum: item.truckNum,
-            deviceType: item.deviceType,
-            deviceToken: item.deviceToken,
-            longitude: item.longitude,
-            latitude: item.latitude
-        }, function (error, record) {
+            itemId: item.itemId
+        }, function (error, result) {
             if (error) {
                 logger.error('addLocation' + error.message);
                 resUtil.resInternalError(error, res, next);
-            } else {
-                iterator(null, i);
+            }
+            if (result && result.length > 0) {
+                if (result[0].adcode == item.adcode)
+                    iterator(null, i);
+                else
+                    locationDao.addLocation({
+                        updateTime: new Date(),
+                        userId: item.userNo,
+                        truckNum: item.truckNum,
+                        deviceType: item.deviceType,
+                        deviceToken: item.deviceToken,
+                        longitude: item.longitude,
+                        latitude: item.latitude,
+                        itemId: item.itemId,
+                        speed: item.speed,
+                        adcode: item.adcode
+                    }, function (error, record) {
+                        if (error) {
+                            logger.error('addLocation' + error.message);
+                            resUtil.resInternalError(error, res, next);
+                        } else {
+                            iterator(null, i);
+                        }
+                    });
             }
         });
     }).seq(function () {
@@ -56,6 +73,7 @@ function getLocation(req, res, next) {
             startTime: params.startTime,
             endTime: params.endTime,
             truckNum: params.truckNum,
+            itemId: params.itemId,
             start: params.start,
             size: params.size
         }, function (error, rows) {
