@@ -25,31 +25,28 @@ function addLocation(req, res, next) {
                 logger.error('addLocation' + error.message);
                 resUtil.resInternalError(error, res, next);
             }
-            if (result && result.length > 0) {
-                if (result[0].adcode == item.adcode)
-                    iterator(null, i);
-                else
-                    locationDao.addLocation({
-                        updateTime: new Date(),
-                        userId: item.userNo,
-                        truckNum: item.truckNum,
-                        deviceType: item.deviceType,
-                        deviceToken: item.deviceToken,
-                        longitude: item.longitude,
-                        latitude: item.latitude,
-                        itemId: item.itemId,
-                        speed: item.speed,
-                        adcode: item.adcode
-                    }, function (error, record) {
-                        if (error) {
-                            logger.error('addLocation' + error.message);
-                            resUtil.resInternalError(error, res, next);
-                        } else {
-                            iterator(null, i);
-                        }
-                    });
-            } else
+            if (result && result.length > 0 && result[0].adcode == item.adcode)
                 iterator(null, i);
+            else
+                locationDao.addLocation({
+                    updateTime: new Date(),
+                    userId: item.userNo,
+                    truckNum: item.truckNum,
+                    deviceType: item.deviceType,
+                    deviceToken: item.deviceToken,
+                    longitude: item.longitude,
+                    latitude: item.latitude,
+                    itemId: item.itemId,
+                    speed: item.speed,
+                    adcode: item.adcode
+                }, function (error, record) {
+                    if (error) {
+                        logger.error('addLocation' + error.message);
+                        resUtil.resInternalError(error, res, next);
+                    } else {
+                        iterator(null, i);
+                    }
+                });
         });
     }).seq(function () {
         res.send(200, {success: true});
