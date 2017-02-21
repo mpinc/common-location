@@ -59,10 +59,14 @@ function createServer(options) {
     });
     var orderOpArr = [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 99];//订单操作
     server.post({
-        path: '/api/location',
-        contentType: 'application/json'
-    }, roleBase.checkUserToken([8]), location.addLocation);
-    server.get('/api/user/:userNo/location', roleBase.checkUserToken(orderOpArr), location.getLocation);
+            path: '/api/location',
+            contentType: 'application/json'
+        },
+        // roleBase.checkUserToken([8]),
+        location.addLocation);
+    server.get('/api/user/:userNo/location',
+        // roleBase.checkUserToken(orderOpArr),
+        location.getLocation);
 
     server.on('NotFound', function (req, res, next) {
         logger.warn(req.url + " not found");
