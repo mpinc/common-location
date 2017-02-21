@@ -48,7 +48,8 @@ function addLocation(req, res, next) {
                             iterator(null, i);
                         }
                     });
-            }
+            } else
+                iterator(null, i);
         });
     }).seq(function () {
         res.send(200, {success: true});
