@@ -25,9 +25,7 @@ function addLocation(req, res, next) {
                 logger.error('addLocation' + error.message);
                 resUtil.resInternalError(error, res, next);
             }
-            if (result && result.length > 0 && result[0].adcode == item.adcode)
-                iterator(null, i);
-            else
+            if (result && result.length <= 1)
                 locationDao.addLocation({
                     updateTime: new Date(),
                     userId: item.userNo,
@@ -50,6 +48,57 @@ function addLocation(req, res, next) {
                         iterator(null, i);
                     }
                 });
+            else if (result && result.length > 1) {
+                locationDao.updateLocation({
+                    locId: result[0]._id,
+                    locInfo: {
+                        updateTime: new Date(),
+                        userId: item.userNo,
+                        truckNum: item.truckNum,
+                        deviceType: item.deviceType,
+                        deviceToken: item.deviceToken,
+                        longitude: item.longitude,
+                        latitude: item.latitude,
+                        itemId: item.itemId,
+                        speed: item.speed,
+                        adcode: item.adcode,
+                        accuracy: item.accuracy,
+                        locationType: item.locationType,
+                        distance: item.distance
+                    }
+                }, function (error, result) {
+                    if (error) {
+                        logger.error('addLocation' + error.message);
+                        resUtil.resInternalError(error, res, next);
+                    } else {
+                        if (result[0].adcode != item.adcode)
+                            locationDao.addLocation({
+                                updateTime: new Date(),
+                                userId: item.userNo,
+                                truckNum: item.truckNum,
+                                deviceType: item.deviceType,
+                                deviceToken: item.deviceToken,
+                                longitude: item.longitude,
+                                latitude: item.latitude,
+                                itemId: item.itemId,
+                                speed: item.speed,
+                                adcode: item.adcode,
+                                accuracy: item.accuracy,
+                                locationType: item.locationType,
+                                distance: item.distance
+                            }, function (error, record) {
+                                if (error) {
+                                    logger.error('addLocation' + error.message);
+                                    resUtil.resInternalError(error, res, next);
+                                } else {
+                                    iterator(null, i);
+                                }
+                            });
+                        else
+                            iterator(null, i);
+                    }
+                });
+            }
         });
     }).seq(function () {
         res.send(200, {success: true});

@@ -62,6 +62,12 @@ function getLocation(params, callback) {
         callback(err, rows);
     });
 }
+function updateLocation(params, callback) {
+    locationModel.findByIdAndUpdate(params.locId, {$set: params.locInfo}, function (err, result) {
+        logger.debug(' updateLocation ');
+        callback(err, result);
+    });
+}
 function getUserIdByDriverId(params, callback) {
     var url = "http://" + config.loginModuleUrl.host + ":" + config.loginModuleUrl.port + "/api/driver?driverId=" + params.driverId;
     http.get(url, function (result) {
@@ -82,5 +88,6 @@ function getUserIdByDriverId(params, callback) {
 module.exports = {
     addLocation: addLocation,
     getLocation: getLocation,
+    updateLocation: updateLocation,
     getUserIdByDriverId: getUserIdByDriverId
 };
