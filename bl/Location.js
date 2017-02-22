@@ -25,7 +25,7 @@ function addLocation(req, res, next) {
                 logger.error('addLocation' + error.message);
                 resUtil.resInternalError(error, res, next);
             }
-            if (result && result.length <= 1)
+            if (result && result.length == 0)
                 locationDao.addLocation({
                     updateTime: new Date(),
                     userId: item.userNo,
@@ -45,7 +45,28 @@ function addLocation(req, res, next) {
                         logger.error('addLocation' + error.message);
                         resUtil.resInternalError(error, res, next);
                     } else {
-                        iterator(null, i);
+                        locationDao.addLocation({
+                            updateTime: new Date(),
+                            userId: item.userNo,
+                            truckNum: item.truckNum,
+                            deviceType: item.deviceType,
+                            deviceToken: item.deviceToken,
+                            longitude: item.longitude,
+                            latitude: item.latitude,
+                            itemId: item.itemId,
+                            speed: item.speed,
+                            adcode: item.adcode,
+                            accuracy: item.accuracy,
+                            locationType: item.locationType,
+                            distance: item.distance
+                        }, function (error, record) {
+                            if (error) {
+                                logger.error('addLocation' + error.message);
+                                resUtil.resInternalError(error, res, next);
+                            } else {
+                                iterator(null, i);
+                            }
+                        });
                     }
                 });
             else if (result && result.length > 1) {
