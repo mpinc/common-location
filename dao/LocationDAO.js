@@ -20,7 +20,10 @@ function addLocation(params, callback) {
         longitude: params.longitude,//经度
         itemId: params.itemId,
         speed: params.speed,
-        adcode: params.adcode
+        adcode: params.adcode,
+        accuracy: params.accuracy,
+        locationType: params.locationType,
+        distance: params.distance
     });
     locationObj.save(function (error, result) {
         logger.debug('addLocation');
@@ -28,7 +31,8 @@ function addLocation(params, callback) {
     });
 }
 function getLocation(params, callback) {
-    var query = locationModel.find({}).select('_id userId itemId adcode speed truckNum deviceType deviceToken latitude longitude updateTime ');
+    var query = locationModel.find({}).select('_id userId itemId adcode speed accuracy truckNum deviceType ' +
+        'deviceToken locationType distance latitude longitude updateTime ');
     if (params.userNo != null) {
         query.where('userId').equals(params.userNo);
     }

@@ -38,7 +38,10 @@ function addLocation(req, res, next) {
                     latitude: item.latitude,
                     itemId: item.itemId,
                     speed: item.speed,
-                    adcode: item.adcode
+                    adcode: item.adcode,
+                    accuracy: item.accuracy,
+                    locationType: item.locationType,
+                    distance: item.distance
                 }, function (error, record) {
                     if (error) {
                         logger.error('addLocation' + error.message);

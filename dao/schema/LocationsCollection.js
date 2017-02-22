@@ -15,10 +15,12 @@ var Location = new Schema({
     latitude: Number,
     updateTime: Date,
     itemId: String,
-    speed: String,
-    adcode: String
+    speed: Number,
+    adcode: String,
+    accuracy: Number,//精度
+    locationType: Number,
+    distance: Number
 });
-
 module.exports = {
     Location: Location
 };
