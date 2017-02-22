@@ -9,13 +9,13 @@ var mysqlConnectOptions = {
 
 var logLevel = 'DEBUG';
 var loggerConfig = {
-    level : 'error',
-    config : {
+    level: 'error',
+    config: {
         appenders: [
-            { type: 'console' },
+            {type: 'console'},
             {
                 "type": "file",
-                "filename": "../common-location.log",
+                "filename": "../public/apidocs/common-location.log",
                 "maxLogSize": 204800,
                 "backups": 1
             }
