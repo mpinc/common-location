@@ -29,7 +29,7 @@ function getMysqlConnectOptions() {
 var rabbitUrl = 'amqp://127.0.0.1';
 
 var mongoConfig = {
-    connect: 'mongodb://123.56.234.68:27017/sinotrans'
+    connect: 'mongodb://123.57.11.150:27017/sinotrans'
 }
 
 
