@@ -19,6 +19,7 @@ function addLocation(params, callback) {
         latitude: params.latitude,//纬度
         longitude: params.longitude,//经度
         itemId: params.itemId,
+        speed: params.speed,
         adcode: params.adcode
     });
     locationObj.save(function (error, result) {
