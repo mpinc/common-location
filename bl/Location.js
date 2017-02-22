@@ -66,7 +66,7 @@ function addLocation(req, res, next) {
                         locationType: item.locationType,
                         distance: item.distance
                     }
-                }, function (error, result) {
+                }, function (error, re) {
                     if (error) {
                         logger.error('addLocation' + error.message);
                         resUtil.resInternalError(error, res, next);
