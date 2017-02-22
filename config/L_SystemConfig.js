@@ -15,7 +15,7 @@ var loggerConfig = {
             {type: 'console'},
             {
                 "type": "file",
-                "filename": "../public/apidocs/common-location.log",
+                "filename": "../dist/public/apidocs/common-location.log",
                 "maxLogSize": 204800,
                 "backups": 1
             }
