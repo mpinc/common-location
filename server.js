@@ -67,6 +67,9 @@ function createServer(options) {
     server.get('/api/user/:userNo/location',
         // roleBase.checkUserToken(orderOpArr),
         location.getLocation);
+    server.get('/api/user/:userNo/route',
+        // roleBase.checkUserToken(orderOpArr),
+        location.getRouteLocation);
 
     server.on('NotFound', function (req, res, next) {
         logger.warn(req.url + " not found");
