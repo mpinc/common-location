@@ -81,8 +81,9 @@ function getRouteLocation(req, res, next) {
             } else if (rows) {
                 var result = [];
                 if (rows.length > 18) {
-                    var size = Math.round((rows.length - 2) / 16);
-                    for (var i = 0; i < rows.length - 1; i += size) {
+                    var count = rows.length - 2 - (rows.length - 2) % 16;
+                    var size = count / 16;
+                    for (var i = 0; i <= count; i += size) {
                         result.push(rows[i]);
                     }
                     result.push(rows[rows.length - 1]);
