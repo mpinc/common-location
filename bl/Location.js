@@ -81,7 +81,7 @@ function getRouteLocation(req, res, next) {
             } else if (rows) {
                 var result = [];
                 if (rows.length > 18) {
-                    var size = Math.round((rows.length - 2) / 17);
+                    var size = Math.round((rows.length - 2) / 16);
                     for (var i = 0; i < rows.length - 1; i += size) {
                         result.push(rows[i]);
                     }
@@ -92,6 +92,7 @@ function getRouteLocation(req, res, next) {
                 return next();
             } else {
                 resUtil.resetQueryRes(res, []);
+                return next();
             }
         });
     });
