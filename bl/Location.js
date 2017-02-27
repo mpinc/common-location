@@ -26,7 +26,7 @@ function addLocation(req, res, next) {
                 resUtil.resInternalError(error, res, next);
             }
             locationDao.addLocation({
-                updateTime: new Date(),
+                updateTime: item.updateTime,
                 userId: item.userNo,
                 truckNum: item.truckNum,
                 deviceType: item.deviceType,

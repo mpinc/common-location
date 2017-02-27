@@ -13,7 +13,7 @@ function addLocation(params, callback) {
     var locationObj = new locationModel({
         userId: params.userNo,
         truckNum: params.truckNum,
-        updateTime: Date.now(),
+        updateTime: params.updateTime,
         deviceType: params.deviceType,//设备类型：0:win-pc;1:mac;2:android;3:ios;9:others
         deviceToken: params.deviceToken,
         latitude: params.latitude,//纬度
