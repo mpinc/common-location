@@ -12,6 +12,7 @@ var logger = serverLogger.createLogger('server.js');
 var sysConfig = require('./config/SystemConfig.js');
 var location = require('./bl/Location.js');
 var roleBase = require('./bl/RoleBase.js');
+var track = require('./bl/ZhiyunTrack');
 moduleUtil.setLoginUrl(sysConfig.loginModuleUrl);
 
 function createServer(options) {
@@ -70,6 +71,9 @@ function createServer(options) {
     server.get('/api/user/:userNo/route',
         // roleBase.checkUserToken(orderOpArr),
         location.getRouteLocation);
+
+    server.post({path: '/api/zhiyunTrack', contentType: 'application/json'}, track.addTrack);
+    server.get('/api/zhiyunTrack', track.getTrack);
 
     server.on('NotFound', function (req, res, next) {
         logger.warn(req.url + " not found");
