@@ -3,7 +3,7 @@
  */
 var serverLogger = require('../util/ServerLogger.js');
 var logger = serverLogger.createLogger('ZhiYunTrackDAO.js');
-var track = require('./schema/ZhiyunTrackCollection').Location;
+var track = require('./schema/ZhiyunTrackCollection').ZhiyunTrack;
 var mongoose = require('../db/MongoCon.js').getMongo();
 var trackModel = mongoose.model('track_collection', track);
 var config = require('../config/SystemConfig.js');
