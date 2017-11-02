@@ -15,6 +15,7 @@ MongoClient.connect(sysConfig.mongoConfig.connect, function (err, dbInstance) {
 var mongoose = require('mongoose');
 
 mongoose.connect(sysConfig.mongoConfig.connect);
+mongoose.set('debug', true);
 
 var getDb = function (callback) {
     // Open the connection to the server
