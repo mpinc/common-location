@@ -26,7 +26,7 @@ exports.getTrack = function (req, res, next) {
             logger.error('getLocation' + error.message);
             return resUtil.resInternalError(error, res, next);
         }
-        resUtil.resetQueryRes(res, rows);
+        resUtil.resetQueryRes(res, result);
         return next();
     });
 };
