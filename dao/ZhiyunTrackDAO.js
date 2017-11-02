@@ -25,8 +25,7 @@ exports.addTrack = function (params, callback) {
 };
 
 exports.getTrack = function (params, callback) {
-    var query = trackModel.find({})
-        .select('_id userId truckNum itemId track startTime endTime createTime ');
+    var query = trackModel.find({});
     if (params.userNo != null) {
         query.where('userId').equals(params.userNo);
     }
