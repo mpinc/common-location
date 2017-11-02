@@ -11,7 +11,7 @@ exports.ZhiyunTrack = new Schema({
     truckNum: String,
     createTime: Date,
     itemId: String,
-    track: String,
+    track: Object,
     startTime: Date,
     endTime: Date
 });
