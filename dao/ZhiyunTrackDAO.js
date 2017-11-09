@@ -14,6 +14,7 @@ exports.addTrack = function (params, callback) {
         truckNum: params.truckNum,
         itemId: params.itemId,
         track: params.track,
+        park: params.park,
         startTime: params.startTime,
         endTime: params.endTime,
         createTime: Date.now()
