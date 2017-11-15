@@ -13,6 +13,7 @@ exports.ZhiyunTrack = new Schema({
     itemId: String,
     track: Object,
     park: Object,
+    parkMins: String,
     startTime: Date,
     endTime: Date
 });

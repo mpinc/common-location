@@ -15,6 +15,7 @@ exports.addTrack = function (params, callback) {
         itemId: params.itemId,
         track: params.track,
         park: params.park,
+        parkMins: params.parkMins,
         startTime: params.startTime,
         endTime: params.endTime,
         createTime: Date.now()
@@ -35,6 +36,9 @@ exports.getTrack = function (params, callback) {
     }
     if (params.itemId != null) {
         query.where('itemId').equals(params.itemId);
+    }
+    if (params.parkMins != null) {
+        query.where('parkMins').equals(params.parkMins);
     }
     if (params.startTime != null) {
         query.where('startTime').equals(params.startTime);
