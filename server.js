@@ -35,6 +35,7 @@ function createServer(options) {
         ip: true
     }));
     restify.CORS.ALLOW_HEADERS.push('auth-token');
+    restify.CORS.ALLOW_HEADERS.push('device-info');
     restify.CORS.ALLOW_HEADERS.push('client-id');
     restify.CORS.ALLOW_HEADERS.push("Access-Control-Allow-Origin");
     restify.CORS.ALLOW_HEADERS.push("Access-Control-Allow-Credentials");
