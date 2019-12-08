@@ -5,7 +5,7 @@
   "main": "main.js",
   "dependencies": {
     "mongodb": "2.1.7",
-    "mongoose": "4.4.17",
+    "mongoose": "5.7.14",
     "mp-common-util": "https://github.com/mpinc/common-util.git#master",
     "mysql": "2.10.2",
     "posix-getopt": "1.2.0",
