@@ -7,7 +7,7 @@
     "mongodb": "2.1.7",
     "mongoose": "4.4.17",
     "mp-common-util": "https://github.com/mpinc/common-util.git#master",
-    "mysql": "2.10.2",
+    "mysql": "2.17.1",
     "posix-getopt": "1.2.0",
     "request": "2.69.0",
     "restify": "4.0.4",
