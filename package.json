@@ -4,7 +4,7 @@
   "description": "mission public location module",
   "main": "main.js",
   "dependencies": {
-    "mongodb": "2.1.7",
+    "mongodb": "3.6.1",
     "mongoose": "4.4.17",
     "mp-common-util": "https://github.com/mpinc/common-util.git#master",
     "mysql": "2.10.2",
